@@ -11,7 +11,7 @@ export default async function handler(req, res) {
   const email = req.query.email;
 
   const GAS_URL =
-    "https://script.google.com/macros/s/AKfycbzNuPpPYe3av3w7mo2lY0AK-VagrXJQ1hKTHzkkgqcXc1iZYiaLY1KLy-zIrtsLpw4Ppg/exec";
+    "https://script.google.com/macros/s/AKfycbxDA3Q_5dTotv2eM5WxphW0l9OQrm-pIPwoJVLfO59URAz7j5W2slVC-OhvZ5_qcHFb/exec";
 
   try {
     const response = await fetch(
