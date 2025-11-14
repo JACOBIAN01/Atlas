@@ -6,7 +6,7 @@ export default function ModuleSubmission({ teacher, gradeGroup }) {
   const [error, setError] = useState("");
 
   async function submitToSheet(payload) {
-    const res = await fetch("http://localhost:3001/submit", {
+    const res = await fetch("https://atlas-mu-teal.vercel.app/api/submit", {
       method: "POST",
       body: JSON.stringify(payload),
       headers: {
