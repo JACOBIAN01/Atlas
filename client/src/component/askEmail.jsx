@@ -2,8 +2,6 @@
 import { useEffect, useState } from "react";
 
 export default function AskEmail({ onContinue, teacher, setTeacher }) {
-  const gasUrl =
-    "https://script.google.com/macros/s/AKfycbwQ5ASyf2xyyXbHY2rV4f0DWVIX1HazTvUL1yBBJxOn5YQM9J8ZnIzxSgnKjDLk1DNl/exec";
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [notFound, setNotFound] = useState(false);
@@ -14,14 +12,18 @@ export default function AskEmail({ onContinue, teacher, setTeacher }) {
 
     try {
       const res = await fetch(
-        `${gasUrl}?email=${encodeURIComponent(emailValue)}`
+        `https://atlas-mu-teal.vercel.app/api/verify?email=${encodeURIComponent(
+          emailValue
+        )}`
       );
+
       const data = await res.json();
 
-      if (data.found) {
+      if (data.found && data.teacher) {
         setTeacher({
-          name: data.name,
-          batch: data.batch,
+          name: data.teacher.name,
+          batch: data.teacher.subject, // GAS returns subject
+          email: data.teacher.email,
         });
       } else {
         setTeacher(null);
@@ -29,7 +31,10 @@ export default function AskEmail({ onContinue, teacher, setTeacher }) {
       }
     } catch (err) {
       console.error("Fetch error:", err);
+      setTeacher(null);
+      setNotFound(true);
     }
+
     setLoading(false);
   };
 
