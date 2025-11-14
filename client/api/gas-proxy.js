@@ -9,7 +9,7 @@ export default async function handler(req, res) {
 
   try {
     const gasUrl =
-      "https://script.google.com/macros/s/AKfycbwQ5ASyf2xyyXbHY2rV4f0DWVIX1HazTvUL1yBBJxOn5YQM9J8ZnIzxSgnKjDLk1DNl/exec";
+      "https://script.google.com/macros/s/AKfycbyO-OqgCnZ4uZwV-xHOZTJq4tqJP0DrCTJd8R9PcVRyxpx27USPWdVTxNgYQBCWQAdx/exec";
 
     const forwardResponse = await fetch(gasUrl, {
       method: req.method,
