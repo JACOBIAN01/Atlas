@@ -1,10 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
-import { doGetAPI } from "../API";
 
-
-
-export default function AskEmail({ onContinue,teacher,setTeacher}) {
+export default function AskEmail({ onContinue, teacher, setTeacher }) {
+  const gasUrl =
+    "https://script.google.com/macros/s/AKfycbwQ5ASyf2xyyXbHY2rV4f0DWVIX1HazTvUL1yBBJxOn5YQM9J8ZnIzxSgnKjDLk1DNl/exec";
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [notFound, setNotFound] = useState(false);
@@ -15,7 +14,7 @@ export default function AskEmail({ onContinue,teacher,setTeacher}) {
 
     try {
       const res = await fetch(
-        `${doGetAPI}?email=${encodeURIComponent(emailValue)}`
+        `${gasUrl}?email=${encodeURIComponent(emailValue)}`
       );
       const data = await res.json();
 
