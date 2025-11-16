@@ -14,7 +14,12 @@ function Home() {
       )}
 
       {teacherData && gradeGroup && (
-        <ModuleSubmission teacherData={teacherData} gradeGroup={gradeGroup} />
+        <ModuleSubmission
+          teacherData={teacherData}
+          gradeGroup={gradeGroup}
+          setTeacherData={setTeacherData}
+          setGradeGroup={setGradeGroup}
+        />
       )}
     </>
   );

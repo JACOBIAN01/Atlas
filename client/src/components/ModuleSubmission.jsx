@@ -2,23 +2,31 @@ import { useState } from "react";
 // eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from "framer-motion";
 import { modulesData } from "./ModuleData";
-import { SubmitModules } from "../api"; // adjust path as needed
+import { SubmitModules } from "../api";
+import toast from "react-hot-toast";
 
-export default function ModuleSubmission({ teacherData, gradeGroup }) {
+export default function ModuleSubmission({
+  teacherData,
+  gradeGroup,
+  setTeacherData,
+  setGradeGroup,
+}) {
   const [selectedModules, setSelectedModules] = useState([]);
+  const [submitting, setSubmitting] = useState(false);
 
   const modules = modulesData[gradeGroup] || [];
 
   const toggleModule = (module) => {
-    setSelectedModules(
-      (prev) =>
-        prev.includes(module)
-          ? prev.filter((m) => m !== module) // remove
-          : [...prev, module] // add
+    setSelectedModules((prev) =>
+      prev.includes(module)
+        ? prev.filter((m) => m !== module)
+        : [...prev, module]
     );
   };
 
   const handleSelectedModule = async () => {
+    setSubmitting(true);
+
     const Data = {
       email: teacherData.email,
       name: teacherData.name,
@@ -26,19 +34,28 @@ export default function ModuleSubmission({ teacherData, gradeGroup }) {
       gradeGroup: gradeGroup,
       moduleCompleted: selectedModules,
     };
-    console.log(Data);
+
     try {
       const res = await SubmitModules(Data);
-      console.log("RES:", res);
 
       if (res.success) {
-        alert("Module Submitted Successfully!");
+        toast.success("Module Submitted Successfully! 🎉");
+
+        //Auto-clear selected modules
+        setSelectedModules([]);
+        // Return to AskEmail Screen
+        setTimeout(() => {
+          setGradeGroup(null);
+          setTeacherData(null);
+        }, 1200);
       } else {
-        alert("Error: " + res.error);
+        toast.error("Error submitting module.");
+        setSubmitting(false);
       }
     } catch (err) {
-      console.error(err);
-      alert("Something went wrong!");
+      toast.error("Something went wrong!");
+      setSubmitting(false);
+      console.log(err);
     }
   };
 
@@ -53,7 +70,6 @@ export default function ModuleSubmission({ teacherData, gradeGroup }) {
             transition={{ duration: 0.35, ease: "easeOut" }}
             className="w-full max-w-2xl bg-white rounded-3xl shadow-xl p-10 border border-[#ffe0e0]"
           >
-            {/* Heading */}
             <h2 className="text-3xl font-semibold text-gray-800 mb-3 text-center">
               Select Completed Modules
             </h2>
@@ -61,15 +77,13 @@ export default function ModuleSubmission({ teacherData, gradeGroup }) {
               Choose all modules the student has completed
             </p>
 
-            {/* CHECKBOX LIST */}
             <div className="space-y-4 max-h-[350px] overflow-y-auto pr-2">
               {modules.map((module) => (
                 <label
                   key={module}
-                  className="flex items-center space-x-3 cursor-pointer bg-[#FFF7F7] hover:bg-[#FFE6E6] 
-                             border border-[#ffe0e0] rounded-2xl p-3 transition"
+                  className="flex items-center space-x-3 cursor-pointer bg-[#FFF7F7] hover:bg-[#FFE6E6]
+                    border border-[#ffe0e0] rounded-2xl p-3 transition"
                 >
-                  {/* CUSTOM CHECKBOX */}
                   <input
                     type="checkbox"
                     checked={selectedModules.includes(module)}
@@ -81,18 +95,19 @@ export default function ModuleSubmission({ teacherData, gradeGroup }) {
               ))}
             </div>
 
-            {/* Continue Button */}
             <button
               onClick={handleSelectedModule}
-              disabled={selectedModules.length === 0}
+              disabled={selectedModules.length === 0 || submitting}
               className={`mt-8 w-full py-3.5 rounded-2xl text-lg font-semibold shadow-md transition-all 
                 ${
-                  selectedModules.length > 0
+                  submitting
+                    ? "bg-gray-400 cursor-not-allowed text-white"
+                    : selectedModules.length > 0
                     ? "bg-[#FF5C39] hover:bg-[#e64e33] text-white"
                     : "bg-gray-300 text-gray-500 cursor-not-allowed"
                 }`}
             >
-              Continue
+              {submitting ? "Submitting..." : "Continue"}
             </button>
           </motion.div>
         )}
