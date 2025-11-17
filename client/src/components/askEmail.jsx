@@ -80,7 +80,7 @@ function AskEmail({ setTeacherData }) {
         </button>
         {/* Version */}
         <p className="text-xs text-gray-500 mt-4 text-center bg-gray-100 px-3 py-1 rounded-full inline-block mx-auto">
-          V 0.0.1
+          V 0.0.2
         </p>
 
         {/* Result Box */}
