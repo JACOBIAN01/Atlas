@@ -73,6 +73,13 @@ export default function ModuleSubmission({
     }
   };
 
+  function getFirstName(fullName) {
+    // remove Mr/Mrs/Ms/Dr etc.
+    const clean = fullName.replace(/^(mr|mrs|ms|miss|dr|prof|sir)\.?\s+/i, "");
+    // split and return ONLY the first word
+    return clean.split(" ")[0];
+  }
+
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-[#FFECEC] px-4">
       <AnimatePresence>
@@ -84,12 +91,18 @@ export default function ModuleSubmission({
             transition={{ duration: 0.35, ease: "easeOut" }}
             className="w-full max-w-2xl bg-white rounded-3xl shadow-xl p-10 border border-[#ffe0e0]"
           >
-            <h2 className="text-3xl font-semibold text-gray-800 mb-3 text-center">
-              Select Completed Modules
-            </h2>
-            <p className="text-center text-gray-500 mb-8">
-              Choose all modules the student has completed
-            </p>
+            <div className="text-center mb-6">
+              <h2 className="text-2xl font-bold text-gray-800 tracking-tight">
+                Hey{" "}
+                <span className="text-[#FF5C39]">
+                  {getFirstName(teacherData.name)}
+                </span>{" "}
+                👋
+              </h2>
+              <p className="text-lg text-gray-600 font-medium mt-1">
+                Select the modules you’ve completed
+              </p>
+            </div>
 
             <div className="space-y-4 max-h-[350px] overflow-y-auto pr-2">
               {loadingModules ? (

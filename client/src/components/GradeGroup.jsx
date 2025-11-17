@@ -1,24 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { User } from "lucide-react";
 // eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from "framer-motion";
-import { fetchGradeGroups } from "./FetchGradeGroups";
 
-export default function GradeGroup({ teacherData, setGradeGroup }) {
-  const [gradeOptions, setGradeOptions] = useState([]);
-  const [loadingGrades, setLoadingGrades] = useState(true);
-
-  useEffect(() => {
-    async function loadGroups() {
-      setLoadingGrades(true);
-      const groups = await fetchGradeGroups();
-      setGradeOptions(groups);
-      setLoadingGrades(false);
-    }
-
-    loadGroups();
-  }, []);
-
+export default function GradeGroup({
+  teacherData,
+  setGradeGroup,
+  gradeOptions,
+}) {
   const [selected, setSelected] = useState("");
   const handleOnContinue = () => {
     setGradeGroup(selected);
@@ -43,16 +32,11 @@ export default function GradeGroup({ teacherData, setGradeGroup }) {
           onChange={(e) => setSelected(e.target.value)}
           value={selected}
         >
-          <option value="">
-            {loadingGrades ? "Loading grades..." : "Select Grade Group"}
-          </option>
-
-          {!loadingGrades &&
-            gradeOptions.map((g) => (
-              <option key={g} value={g}>
-                {g}
-              </option>
-            ))}
+          {gradeOptions.map((g) => (
+            <option key={g} value={g}>
+              {g}
+            </option>
+          ))}
         </select>
       </div>
 

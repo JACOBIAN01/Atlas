@@ -46,5 +46,31 @@ app.post("/submit-modules", async (req, res) => {
   }
 });
 
+
+// GET /grade-groups
+app.get("/grade-groups", async (req, res) => {
+  try {
+    const response = await fetch(`${GAS_URL}?action=gradeGroups`);
+
+    if (!response.ok) {
+      return res.status(500).json({
+        success: false,
+        message: "Failed to contact Google Apps Script",
+      });
+    }
+
+    const data = await response.json();
+
+    // GAS should return { success: true, gradeGroups: [...] }
+    return res.json(data);
+  } catch (err) {
+    console.error("Backend Error:", err);
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
+});
+
 // --------------------------------------
 app.listen(5000, () => console.log("Server running on port 5000"));

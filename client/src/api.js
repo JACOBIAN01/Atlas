@@ -19,3 +19,22 @@ export const SubmitModules = async (data) => {
     body: JSON.stringify(data),
   }).then((res) => res.json());
 };
+
+export async function fetchGradeGroups() {
+  try {
+    const res = await fetch("https://atlas-3-pl8c.onrender.com/grade-groups");
+
+    if (!res.ok) throw new Error("Network error");
+
+    const data = await res.json();
+
+    if (!data.success) {
+      throw new Error(data.message || "Failed to fetch grade groups");
+    }
+
+    return data.gradeGroups || [];
+  } catch (err) {
+    console.error("Frontend Fetch Error:", err);
+    return [];
+  }
+}
