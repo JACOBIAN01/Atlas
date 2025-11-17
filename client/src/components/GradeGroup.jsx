@@ -1,28 +1,28 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { User } from "lucide-react";
 // eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from "framer-motion";
+import { fetchGradeGroups } from "./FetchGradeGroups";
 
-export default function GradeGroup({ teacherData,setGradeGroup }) {
-  const gradeOptions = [
-    "Grade 1-3",
-    "Grade 4-5",
-    "Grade 6-8",
-    "Grade 9-12",
-    "Roblox",
-    "AI expert (6-12)",
-    "AI genius (1-5)",
-    "Android Application Development Course",
-    "AP Computer Science A",
-    "Prompt Engineering for Kids",
-    "Block Coding Legend (Advance Level)",
-  ];
+export default function GradeGroup({ teacherData, setGradeGroup }) {
+  const [gradeOptions, setGradeOptions] = useState([]);
+  const [loadingGrades, setLoadingGrades] = useState(true);
+
+  useEffect(() => {
+    async function loadGroups() {
+      setLoadingGrades(true);
+      const groups = await fetchGradeGroups();
+      setGradeOptions(groups);
+      setLoadingGrades(false);
+    }
+
+    loadGroups();
+  }, []);
 
   const [selected, setSelected] = useState("");
-  const handleOnContinue = ()=>{
+  const handleOnContinue = () => {
     setGradeGroup(selected);
-  }
-  
+  };
 
   return (
     <div className="min-h-screen w-full bg-[#FFECEC] px-4 py-12 flex flex-col items-center">
@@ -38,17 +38,21 @@ export default function GradeGroup({ teacherData,setGradeGroup }) {
 
         <select
           className="w-full py-3 px-4 rounded-2xl bg-white border border-gray-300 text-gray-700 
-                     shadow-sm focus:ring-2 focus:ring-[#FF5C39] focus:border-[#FF5C39] 
-                     outline-none transition"
+             shadow-sm focus:ring-2 focus:ring-[#FF5C39] focus:border-[#FF5C39] 
+             outline-none transition"
           onChange={(e) => setSelected(e.target.value)}
           value={selected}
         >
-          <option value="">Select Grade Group</option>
-          {gradeOptions.map((g) => (
-            <option key={g} value={g}>
-              {g}
-            </option>
-          ))}
+          <option value="">
+            {loadingGrades ? "Loading grades..." : "Select Grade Group"}
+          </option>
+
+          {!loadingGrades &&
+            gradeOptions.map((g) => (
+              <option key={g} value={g}>
+                {g}
+              </option>
+            ))}
         </select>
       </div>
 
@@ -74,10 +78,10 @@ export default function GradeGroup({ teacherData,setGradeGroup }) {
               <p className="mt-4 bg-[#FFF3F0] text-[#FF5C39] px-4 py-2 rounded-xl inline-block text-sm font-medium">
                 Selected Grade: {selected}
               </p>
-              <br/>
+              <br />
               {selected && (
                 <button
-                onClick={()=>handleOnContinue()}
+                  onClick={() => handleOnContinue()}
                   className="mt-4 px-6 py-2 bg-green-500 hover:bg-green-600 text-white rounded-xl font-semibold shadow-md transition-all duration-200"
                 >
                   Continue
