@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 // eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from "framer-motion";
-import { modulesData } from "./ModuleData";
 import { SubmitModules } from "../api";
 import toast from "react-hot-toast";
+import { fetchModulesByGrade } from "./FetchModulesByGrade";
 
 export default function ModuleSubmission({
   teacherData,
@@ -13,8 +13,18 @@ export default function ModuleSubmission({
 }) {
   const [selectedModules, setSelectedModules] = useState([]);
   const [submitting, setSubmitting] = useState(false);
+  const [modules, setModules] = useState([]);
+  const [loadingModules, setLoadingModules] = useState(true);
 
-  const modules = modulesData[gradeGroup] || [];
+  useEffect(() => {
+    async function load() {
+      setLoadingModules(true);
+      const lessons = await fetchModulesByGrade(gradeGroup);
+      setModules(lessons);
+      setLoadingModules(false);
+    }
+    if (gradeGroup) load();
+  }, [gradeGroup]);
 
   const toggleModule = (module) => {
     setSelectedModules((prev) =>
@@ -82,23 +92,32 @@ export default function ModuleSubmission({
             </p>
 
             <div className="space-y-4 max-h-[350px] overflow-y-auto pr-2">
-              {modules.map((module) => (
-                <label
-                  key={module}
-                  className="flex items-center space-x-3 cursor-pointer bg-[#FFF7F7] hover:bg-[#FFE6E6]
-                    border border-[#ffe0e0] rounded-2xl p-3 transition"
-                >
-                  <input
-                    type="checkbox"
-                    checked={selectedModules.includes(module)}
-                    onChange={() => toggleModule(module)}
-                    className="h-5 w-5 rounded-md border-gray-300 text-[#FF5C39] focus:ring-[#FF5C39]"
-                  />
-                  <span className="text-gray-700 font-medium">{module}</span>
-                </label>
-              ))}
+              {loadingModules ? (
+                <p className="text-center text-gray-500">Loading modules...</p>
+              ) : (
+                modules.map((module) => (
+                  <label
+                    key={module}
+                    className="flex items-center space-x-3 cursor-pointer bg-[#FFF7F7] hover:bg-[#FFE6E6]
+          border border-[#ffe0e0] rounded-2xl p-3 transition"
+                  >
+                    <input
+                      type="checkbox"
+                      checked={selectedModules.includes(module)}
+                      onChange={() => toggleModule(module)}
+                      className="h-5 w-5 rounded-md border-gray-300 text-[#FF5C39] focus:ring-[#FF5C39]"
+                    />
+                    <span className="text-gray-700 font-medium">{module}</span>
+                  </label>
+                ))
+              )}
             </div>
 
+            {!loadingModules && modules.length === 0 && (
+              <p className="text-center text-gray-500">
+                No modules found for this grade.
+              </p>
+            )}
             <button
               onClick={handleSelectedModule}
               disabled={selectedModules.length === 0 || submitting}
