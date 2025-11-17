@@ -3,6 +3,7 @@ import AskEmail from "../components/askEmail";
 import GradeGroup from "../components/GradeGroup";
 import ModuleSubmission from "../components/ModuleSubmission";
 import { fetchGradeGroups } from "../api";
+import KnowYourDev from "../components/KnowYourDev";
 
 function Home() {
   const [teacherData, setTeacherData] = useState(null);
@@ -22,6 +23,9 @@ function Home() {
 
   return (
     <>
+      <div className="absolute top-4 left-4">
+        <KnowYourDev />
+      </div>
       {!teacherData && <AskEmail setTeacherData={setTeacherData} />}
       {teacherData && !gradeGroup && gradeOptions.length > 0 && (
         <GradeGroup
