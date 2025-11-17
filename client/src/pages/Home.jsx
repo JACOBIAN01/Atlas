@@ -23,7 +23,7 @@ function Home() {
   return (
     <>
       {!teacherData && <AskEmail setTeacherData={setTeacherData} />}
-      {teacherData && !gradeGroup && (
+      {teacherData && !gradeGroup && gradeOptions.length > 0 && (
         <GradeGroup
           teacherData={teacherData}
           setGradeGroup={setGradeGroup}
