@@ -9,18 +9,37 @@ function Home() {
   const [teacherData, setTeacherData] = useState(null);
   const [gradeGroup, setGradeGroup] = useState(null);
   const [gradeOptions, setGradeOptions] = useState([]);
-  const [loadingGroups, setLoadingGroups] = useState(true); // ONLY for GradeGroup
-
+  const [loadingGroups, setLoadingGroups] = useState(true);
   // Load grade groups in background
+
   useEffect(() => {
     async function loadGroups() {
-      const groups = await fetchGradeGroups();
+      setLoadingGroups(true);
+
+      let retries = 3;
+      let groups = [];
+
+      while (retries > 0) {
+        try {
+          const result = await fetchGradeGroups();
+          if (Array.isArray(result) && result.length > 0) {
+            groups = result;
+            break;
+          }
+        } catch (err) {
+          console.warn("Error fetching grade groups:", err);
+        }
+        retries--;
+        await new Promise((r) => setTimeout(r, 600));
+      }
+
       setGradeOptions(groups);
       setLoadingGroups(false);
     }
-
-    loadGroups();
-  }, []);
+    if (gradeOptions.length === 0) {
+      loadGroups();
+    }
+  }, [gradeOptions.length]);
 
   return (
     <>
