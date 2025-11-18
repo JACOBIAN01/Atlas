@@ -6,7 +6,7 @@
 
 export const VerifyEmail = async (email) => {
   return fetch(
-    `https://script.google.com/macros/s/AKfycbz5Dkhrv2MpGF8i01NA3JJc7kN91_1C9lQZ7jp7Tv0LgrjD2ggw7FYng1HoxA13HMLO/exec?email=${email}`
+    `https://script.google.com/macros/s/AKfycbyuo7EXFVTbUZSGy4D-Nv3T8IR2l_vQyWKkpJqbeDRs9OFRo4IyJL4AxFAFMsgElIb3/exec?email=${email}`
   ).then((res) => res.json());
 };
 
