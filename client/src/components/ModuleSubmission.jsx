@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { SubmitModules } from "../api";
 import toast from "react-hot-toast";
-import { fetchModulesByGrade } from "./FetchModulesByGrade";
+import { fetchModulesByGrade } from "../api";
 
 export default function ModuleSubmission({
   teacherData,
