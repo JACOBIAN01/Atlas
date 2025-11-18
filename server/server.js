@@ -7,7 +7,7 @@ app.use(express.json());
 
 // Your GAS Web App URL
 const GAS_URL =
-  "https://script.google.com/macros/s/AKfycbz5Dkhrv2MpGF8i01NA3JJc7kN91_1C9lQZ7jp7Tv0LgrjD2ggw7FYng1HoxA13HMLO/exec";
+  "https://script.google.com/macros/s/AKfycbw5gM9qGCS4d6IJOOnfDfvrEPh1QCMreRagXoTyYo2VBrIUf9gqrI_23BmjidymnMfi/exec";
 
 // --------------------------------------
 //           VERIFY EMAIL (GET)
@@ -45,7 +45,6 @@ app.post("/submit-modules", async (req, res) => {
     res.status(500).json({ error: "Server Error", details: err });
   }
 });
-
 
 // GET /grade-groups
 app.get("/grade-groups", async (req, res) => {
