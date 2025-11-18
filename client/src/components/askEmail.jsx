@@ -87,7 +87,11 @@ function AskEmail({ setTeacherData }) {
         <p className="text-xs text-gray-500 mt-4 text-center bg-gray-100 px-3 py-1 rounded-full inline-block mx-auto">
           V 0.0.5
         </p>
-
+        {loading && (
+          <div className="mt-6 flex justify-center">
+            <Skeleton />
+          </div>
+        )}
         {/* Result Box */}
         <AnimatePresence>
           {value && (
@@ -139,3 +143,18 @@ function AskEmail({ setTeacherData }) {
 }
 
 export default AskEmail;
+
+export function Skeleton() {
+  return (
+    <div className="flex items-center space-x-3">
+      {/* Circular skeleton */}
+      <div className="animate-pulse rounded-full bg-gray-300 h-12 w-12"></div>
+
+      {/* Text lines */}
+      <div className="space-y-2">
+        <div className="animate-pulse rounded-md bg-gray-300 h-4 w-[200px]"></div>
+        <div className="animate-pulse rounded-md bg-gray-300 h-4 w-[170px]"></div>
+      </div>
+    </div>
+  );
+}

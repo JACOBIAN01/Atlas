@@ -1,6 +1,6 @@
 import { HelpCircle } from "lucide-react";
 // eslint-disable-next-line no-unused-vars
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 
 export default function KnowYourDev() {
@@ -12,26 +12,44 @@ export default function KnowYourDev() {
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
     >
-      {/* Info Icon */}
-      <HelpCircle className="w-5 h-5 text-blue-600 cursor-pointer" />
+      {/* Icon */}
+      <HelpCircle className="w-5 h-5 text-gray-600 hover:text-[#FF5C39] cursor-pointer transition-colors duration-150" />
 
       {/* Tooltip */}
-      {hover && (
-        <motion.div
-          initial={{ opacity: 0, y: 5 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 5 }}
-          className="absolute left-6 top-0 w-80 bg-white rounded-lg shadow-lg p-3 border border-gray-200 z-20"
-        >
-          <h3 className="text-sm font-semibold">Creator’s Note</h3>
-          <p className="text-xs text-gray-600 mt-1">
-            Hi! I’m Subhadeep — Teacher Mentor-Course Training & Senior Coding
-            Instructor at Codingal. This Web is designed to make your experience
-            smoother and help you submit modules easily. I’d love to hear your
-            feedback at subhadeepghorai23@gmail.com .
-          </p>
-        </motion.div>
-      )}
+      <AnimatePresence>
+        {hover && (
+          <motion.div
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 6 }}
+            transition={{ duration: 0.18, ease: "easeOut" }}
+            className="
+              absolute left-7 top-0 w-72 
+              bg-white shadow-xl border border-gray-200 
+              rounded-xl px-4 py-3 z-20
+            "
+          >
+            {/* Tooltip Arrow */}
+            <div className="absolute -left-1 top-4 w-3 h-3 bg-white border-l border-t border-gray-200 rotate-45"></div>
+
+            <h3 className="text-sm font-semibold text-gray-800">
+              Creator’s Note
+            </h3>
+
+            <p className="text-xs text-gray-600 mt-1 leading-relaxed">
+              Hi! I’m <b className="text-gray-800">Subhadeep</b> — Teacher
+              Mentor (Course Training) & Senior Coding Instructor at Codingal.
+              <br />
+              This platform is crafted to ensure a smooth and effortless module
+              submission experience.
+              <br />
+              For feedback or support, reach me at:
+              <br />
+              <b className="text-[#FF5C39]">subhadeepghorai23@gmail.com</b>
+            </p>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

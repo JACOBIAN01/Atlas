@@ -4,6 +4,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { SubmitModules } from "../api";
 import toast from "react-hot-toast";
 import { fetchModulesByGrade } from "../api";
+import Loader from "./Loader";
+import confetti from "canvas-confetti";
 
 export default function ModuleSubmission({
   teacherData,
@@ -53,7 +55,29 @@ export default function ModuleSubmission({
       const res = await SubmitModules(Data);
 
       if (res.success) {
-        toast.success("Module Submitted Successfully! 🎉");
+        // Main confetti blast
+        confetti({
+          particleCount: 120,
+          spread: 70,
+          startVelocity: 25,
+          origin: { y: 0.65 },
+          colors: ["#FF5C39", "#FFD6C8", "#FF9B85", "#FFFFFF"],
+        });
+
+        // Small follow-up burst
+        setTimeout(() => {
+          confetti({
+            particleCount: 40,
+            spread: 50,
+            startVelocity: 15,
+            origin: { y: 0.7 },
+            colors: ["#FF5C39", "#FFFFFF"],
+          });
+        }, 500);
+
+        toast.success(`🎉 Great Work ${getFirstName(teacherData.name)}`, {
+          duration: 3500,
+        });
 
         //Auto-clear selected modules
         setSelectedModules([]);
@@ -106,7 +130,9 @@ export default function ModuleSubmission({
 
             <div className="space-y-4 max-h-[350px] overflow-y-auto pr-2">
               {loadingModules ? (
-                <p className="text-center text-gray-500">Loading modules...</p>
+                <div className="flex justify-center items-center">
+                  <Loader />
+                </div>
               ) : (
                 modules.map((module) => (
                   <label
