@@ -16,7 +16,7 @@ function Home() {
     async function loadGroups() {
       const groups = await fetchGradeGroups();
       setGradeOptions(groups);
-      setLoadingGroups(false); // done
+      setLoadingGroups(false);
     }
 
     loadGroups();
