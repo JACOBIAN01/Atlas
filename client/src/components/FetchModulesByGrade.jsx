@@ -1,7 +1,7 @@
 export async function fetchModulesByGrade(gradeGroup) {
   try {
     const res = await fetch(
-      `https://script.google.com/macros/s/AKfycbw5gM9qGCS4d6IJOOnfDfvrEPh1QCMreRagXoTyYo2VBrIUf9gqrI_23BmjidymnMfi/exec?grade=${encodeURIComponent(
+      `https://script.google.com/macros/s/AKfycbyuo7EXFVTbUZSGy4D-Nv3T8IR2l_vQyWKkpJqbeDRs9OFRo4IyJL4AxFAFMsgElIb3/exec?grade=${encodeURIComponent(
         gradeGroup
       )}`
     );

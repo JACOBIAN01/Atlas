@@ -7,7 +7,7 @@ app.use(express.json());
 
 // Your GAS Web App URL
 const GAS_URL =
-  "https://script.google.com/macros/s/AKfycbw5gM9qGCS4d6IJOOnfDfvrEPh1QCMreRagXoTyYo2VBrIUf9gqrI_23BmjidymnMfi/exec";
+  "https://script.google.com/macros/s/AKfycbyuo7EXFVTbUZSGy4D-Nv3T8IR2l_vQyWKkpJqbeDRs9OFRo4IyJL4AxFAFMsgElIb3/exec";
 
 // --------------------------------------
 //           VERIFY EMAIL (GET)
