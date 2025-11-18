@@ -1,12 +1,6 @@
-// export const VerifyEmail = async (email) => {
-//   return fetch(
-//     `https://atlas-3-pl8c.onrender.com/verify-email?email=${email}`
-//   ).then((res) => res.json());
-// };
-
 export const VerifyEmail = async (email) => {
   return fetch(
-    `https://script.google.com/macros/s/AKfycbyuo7EXFVTbUZSGy4D-Nv3T8IR2l_vQyWKkpJqbeDRs9OFRo4IyJL4AxFAFMsgElIb3/exec?email=${email}`
+    `https://atlas-3-pl8c.onrender.com/verify-email?email=${email}`
   ).then((res) => res.json());
 };
 
