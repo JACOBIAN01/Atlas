@@ -3,6 +3,7 @@ import { VerifyEmail } from "../api";
 // eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from "framer-motion";
 import { CheckCircle, XCircle, Mail } from "lucide-react";
+import toast from "react-hot-toast";
 
 function AskEmail({ setTeacherData }) {
   const [email, setEmail] = useState("");
@@ -14,6 +15,10 @@ function AskEmail({ setTeacherData }) {
   };
 
   const handleEmail = async () => {
+    if (!email) {
+      toast.error("Enter your email to get started.");
+      return;
+    }
     setLoading(true);
     setValue(null);
 
