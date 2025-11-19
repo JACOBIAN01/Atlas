@@ -4,7 +4,7 @@ import GradeGroup from "../components/GradeGroup";
 import ModuleSubmission from "../components/ModuleSubmission";
 import { fetchGradeGroups } from "../api";
 import KnowYourDev from "../components/KnowYourDev";
-
+import MadeByBadge from "../components/MadeByBadge";
 function Home() {
   const [teacherData, setTeacherData] = useState(null);
   const [gradeGroup, setGradeGroup] = useState(null);
@@ -80,6 +80,7 @@ function Home() {
           />
         )}
       </div>
+      <MadeByBadge/>
     </>
   );
 }
