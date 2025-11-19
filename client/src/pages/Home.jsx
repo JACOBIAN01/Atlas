@@ -43,40 +43,43 @@ function Home() {
 
   return (
     <>
-      <div className="absolute top-4 left-4">
+      {/* Developer Badge */}
+      <div className="absolute top-4 left-4 z-20">
         <KnowYourDev />
       </div>
 
-      {/* Step 1 — AskEmail ALWAYS shows first */}
-      {!teacherData && <AskEmail setTeacherData={setTeacherData} />}
+      {/* Main Content Centered */}
+      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen">
+        {/* STEP 1 */}
+        {!teacherData && <AskEmail setTeacherData={setTeacherData} />}
 
-      {/* Step 2 — Only after email, show GradeGroup OR its loader */}
-      {teacherData && !gradeGroup && (
-        <>
-          {loadingGroups ? (
-            // Loader ONLY for GradeGroup
-            <div className="min-h-screen flex justify-center items-center bg-[#FFECEC]">
-              <div className="animate-spin h-12 w-12 rounded-full border-4 border-gray-300 border-t-[#FF5C39]"></div>
-            </div>
-          ) : (
-            <GradeGroup
-              teacherData={teacherData}
-              setGradeGroup={setGradeGroup}
-              gradeOptions={gradeOptions}
-            />
-          )}
-        </>
-      )}
+        {/* STEP 2 */}
+        {teacherData && !gradeGroup && (
+          <>
+            {loadingGroups ? (
+              <div className="flex justify-center items-center">
+                <div className="animate-spin h-12 w-12 rounded-full border-4 border-gray-300 border-t-[#FF5C39]"></div>
+              </div>
+            ) : (
+              <GradeGroup
+                teacherData={teacherData}
+                setGradeGroup={setGradeGroup}
+                gradeOptions={gradeOptions}
+              />
+            )}
+          </>
+        )}
 
-      {/* Step 3 — Submission */}
-      {teacherData && gradeGroup && (
-        <ModuleSubmission
-          teacherData={teacherData}
-          gradeGroup={gradeGroup}
-          setTeacherData={setTeacherData}
-          setGradeGroup={setGradeGroup}
-        />
-      )}
+        {/* STEP 3 */}
+        {teacherData && gradeGroup && (
+          <ModuleSubmission
+            teacherData={teacherData}
+            gradeGroup={gradeGroup}
+            setTeacherData={setTeacherData}
+            setGradeGroup={setGradeGroup}
+          />
+        )}
+      </div>
     </>
   );
 }
