@@ -124,13 +124,61 @@ function AskEmail({ setTeacherData }) {
               {/* Error */}
               {!value.success && (
                 <div className="flex items-start space-x-4">
-                  <XCircle size={40} className="text-red-500" />
-                  <div>
-                    <p className="text-xl font-semibold text-gray-800">
-                      Your email is not registered with us. Please use your
-                      Codingal-registered email address.
+                  <XCircle size={36} className="text-red-500" />
+
+                  <div className="text-sm">
+                    {/* MAIN ERROR MESSAGE */}
+                    <p className="font-semibold text-gray-800">
+                      Your email is not registered with Codingal.
                     </p>
-                    <p className="text-gray-600 mt-1">{value.error}</p>
+
+                    <p className="text-gray-700 mt-1">
+                      Please use your Codingal-registered email ID.
+                    </p>
+
+                    {/* NEED HELP + YOUR NAME */}
+                    <p className="text-gray-600 mt-3">
+                      Need help? Contact{" "}
+                      <span className="font-semibold text-gray-800">
+                        Subhadeep
+                      </span>
+                      :
+                    </p>
+
+                    {/* BUTTON ROW */}
+                    <div className="flex gap-2 mt-2 flex-wrap">
+                      {/* WhatsApp */}
+                      <a
+                        href="https://wa.me/917029043892"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-1 px-3 py-1 bg-gray-100 
+                     hover:bg-gray-200 rounded-md text-gray-700 font-medium"
+                      >
+                        <span>🟢</span> WhatsApp
+                      </a>
+
+                      {/* Slack */}
+                      <a
+                        href="https://codingal-teachers.slack.com/team/U06ARMQP7H8"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-1 px-3 py-1 bg-gray-100 
+                     hover:bg-gray-200 rounded-md text-gray-700 font-medium"
+                      >
+                        <span>💬</span> Slack
+                      </a>
+
+                      {/* Email */}
+                      <a
+                        href="mailto:subhadeepghorai23@gmail.com"
+                        target="_blank"
+                        className="flex items-center gap-1 px-3 py-1 bg-gray-100 
+                     hover:bg-gray-200 rounded-md text-gray-700 font-medium"
+                      >
+                        <span>📧</span>subhadeepghorai23@gmail.com
+                      </a>
+                    </div>
                   </div>
                 </div>
               )}

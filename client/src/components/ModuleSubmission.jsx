@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 // eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from "framer-motion";
 import { SubmitModules } from "../api";
@@ -12,11 +12,31 @@ export default function ModuleSubmission({
   gradeGroup,
   setTeacherData,
   setGradeGroup,
+  lastSubmission,
 }) {
   const [selectedModules, setSelectedModules] = useState([]);
   const [submitting, setSubmitting] = useState(false);
   const [modules, setModules] = useState([]);
   const [loadingModules, setLoadingModules] = useState(true);
+
+  const LastSubmissionList = useMemo(() => {
+    return lastSubmission
+      ? lastSubmission.modules.split(",").map((m) => m.trim())
+      : [];
+  }, [lastSubmission]);
+
+  useEffect(() => {
+    if (selectedModules.length === 0) return;
+
+    const hasDuplicate = selectedModules.some((m) =>
+      LastSubmissionList.includes(m)
+    );
+
+    if (hasDuplicate) {
+      toast.dismiss();
+      toast.error("⚠️ You selected a module already submitted earlier!");
+    }
+  }, [selectedModules, LastSubmissionList]);
 
   useEffect(() => {
     async function load() {
@@ -137,8 +157,12 @@ export default function ModuleSubmission({
                 modules.map((module) => (
                   <label
                     key={module}
-                    className="flex items-center space-x-3 cursor-pointer bg-[#FFF7F7] hover:bg-[#FFE6E6]
-          border border-[#ffe0e0] rounded-2xl p-3 transition"
+                    className={`flex items-center space-x-3 cursor-pointer rounded-2xl p-3 transition border 
+      ${
+        LastSubmissionList.includes(module)
+          ? "bg-red-50 border-red-300"
+          : "bg-[#FFF7F7] hover:bg-[#FFE6E6] border-[#ffe0e0]"
+      }`}
                   >
                     <input
                       type="checkbox"
@@ -171,6 +195,45 @@ export default function ModuleSubmission({
             >
               {submitting ? "Submitting..." : "Continue"}
             </button>
+          </motion.div>
+        )}
+        {lastSubmission && (
+          <motion.div
+            initial={{ opacity: 0, x: 40 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 40 }}
+            transition={{ duration: 0.35 }}
+            className="hidden lg:block w-80 fixed right-10 top-24 bg-white 
+                   shadow-xl rounded-2xl border border-[#ffe0e0] p-6"
+          >
+            <h3 className="text-lg font-bold text-[#FF5C39] mb-3">
+              🗂️ Submission History
+            </h3>
+
+            <div className="bg-[#FFF7DC] border border-[#FFE29A] p-4 rounded-xl">
+              <p className="mb-2 text-gray-700">
+                <span className="font-semibold">Grade Group:</span>{" "}
+                {lastSubmission.gradeGroup}
+              </p>
+
+              <p className="font-semibold text-gray-800 mt-3">
+                Modules Submitted:
+              </p>
+              <ul className="list-disc ml-5 mt-1 text-gray-700">
+                {lastSubmission.modules
+                  .split(",")
+                  .map((m) => m.trim())
+                  .filter(Boolean)
+                  .map((m, i) => (
+                    <li key={i}>{m}</li>
+                  ))}
+              </ul>
+
+              <p className="mt-4 text-gray-700">
+                <span className="font-semibold">Submitted At:</span>{" "}
+                {new Date(lastSubmission.timestamp).toLocaleString()}
+              </p>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

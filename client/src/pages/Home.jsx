@@ -12,12 +12,16 @@ function Home() {
   const [gradeGroup, setGradeGroup] = useState(null);
   const [gradeOptions, setGradeOptions] = useState([]);
   const [loadingGroups, setLoadingGroups] = useState(true);
+  const [lastSubmission, setLastSubmission] = useState(null);
 
   useEffect(() => {
     if (!teacherData) return;
     async function loadLastModule() {
       const data = await fetchLastModule(teacherData.email);
       console.log("Last submission:", data);
+      if (data.success) {
+        setLastSubmission(data.last);
+      }
     }
     if (teacherData) {
       loadLastModule();
@@ -89,6 +93,7 @@ function Home() {
             gradeGroup={gradeGroup}
             setTeacherData={setTeacherData}
             setGradeGroup={setGradeGroup}
+            lastSubmission={lastSubmission}
           />
         )}
       </div>
