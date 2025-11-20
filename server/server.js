@@ -39,7 +39,6 @@ app.get("/get-last-module", async (req, res) => {
     );
 
     const data = await response.json();
-    console.log("Server response: ", data);
     return res.json(data);
   } catch (err) {
     console.error("Error fetching last module:", err);
