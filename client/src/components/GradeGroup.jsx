@@ -11,7 +11,7 @@ export default function GradeGroup({
 }) {
   const [selected, setSelected] = useState("");
   const handleOnContinue = () => {
-    toast.error("⚠️ Please don't submit repeated modules!");
+    toast("⚠️ Please don't submit repeated modules!");
     setGradeGroup(selected);
   };
 
