@@ -2,6 +2,7 @@ import { useState } from "react";
 import { User } from "lucide-react";
 // eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from "framer-motion";
+import toast from "react-hot-toast";
 
 export default function GradeGroup({
   teacherData,
@@ -10,6 +11,7 @@ export default function GradeGroup({
 }) {
   const [selected, setSelected] = useState("");
   const handleOnContinue = () => {
+    toast.error("⚠️ Please don't submit repeated modules!");
     setGradeGroup(selected);
   };
 
