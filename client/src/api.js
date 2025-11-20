@@ -32,6 +32,7 @@ export async function fetchGradeGroups() {
     return [];
   }
 }
+
 export async function fetchModulesByGrade(gradeGroup) {
   try {
     const res = await fetch(
