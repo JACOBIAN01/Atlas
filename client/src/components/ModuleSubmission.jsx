@@ -58,7 +58,7 @@ export default function ModuleSubmission({
 
   const handleSelectedModule = async () => {
     if (!selectedModules) {
-      toast.error("Please Select Completed Modules.");
+      toast("Please Select Completed Modules.");
       return;
     }
     setSubmitting(true);
