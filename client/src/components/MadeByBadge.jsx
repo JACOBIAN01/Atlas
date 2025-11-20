@@ -13,7 +13,9 @@ export default function MadeByBadge() {
       >
         <span>Crafted with</span>
         <span className="text-red-500">❤️</span>
-        <span className="font-semibold text-gray-900">by Subhadeep</span>
+        <span className="font-semibold text-gray-900">
+          by Codingal Course Team
+        </span>
       </div>
     </div>
   );
