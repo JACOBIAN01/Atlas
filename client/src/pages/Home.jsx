@@ -5,12 +5,24 @@ import ModuleSubmission from "../components/ModuleSubmission";
 import { fetchGradeGroups } from "../api";
 import KnowYourDev from "../components/KnowYourDev";
 import MadeByBadge from "../components/MadeByBadge";
+import { fetchLastModule } from "../api";
+
 function Home() {
   const [teacherData, setTeacherData] = useState(null);
   const [gradeGroup, setGradeGroup] = useState(null);
   const [gradeOptions, setGradeOptions] = useState([]);
   const [loadingGroups, setLoadingGroups] = useState(true);
-  // Load grade groups in background
+
+  useEffect(() => {
+    if (!teacherData) return;
+    async function loadLastModule() {
+      const data = await fetchLastModule(teacherData.email);
+      console.log("Last submission:", data);
+    }
+    if (teacherData) {
+      loadLastModule();
+    }
+  }, [teacherData]);
 
   useEffect(() => {
     async function loadGroups() {
@@ -80,7 +92,7 @@ function Home() {
           />
         )}
       </div>
-      <MadeByBadge/>
+      <MadeByBadge />
     </>
   );
 }

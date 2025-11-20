@@ -33,6 +33,13 @@ export async function fetchGradeGroups() {
   }
 }
 
+export async function fetchLastModule(email) {
+  const res = await fetch(
+    `https://atlas-3-pl8c.onrender.com/get-last-module?email=${email}`
+  );
+  return await res.json();
+}
+
 export async function fetchModulesByGrade(gradeGroup) {
   try {
     const res = await fetch(

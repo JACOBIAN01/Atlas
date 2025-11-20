@@ -11,7 +11,7 @@ const GAS_URL =
 // --------------------------------------
 //           VERIFY EMAIL (GET)
 // --------------------------------------
-https: app.get("/verify-email", async (req, res) => {
+app.get("/verify-email", async (req, res) => {
   try {
     const email = req.query.email;
 
@@ -21,6 +21,33 @@ https: app.get("/verify-email", async (req, res) => {
     res.json(data);
   } catch (err) {
     res.status(500).json({ error: "Server Error", details: err });
+  }
+});
+
+// --------------------------------------
+//          GET LAST Submitted Modules
+// --------------------------------------
+app.get("/get-last-module", async (req, res) => {
+  try {
+    const email = req.query.email;
+    if (!email) {
+      return res.status(400).json({ success: false, error: "Email missing" });
+    }
+
+    const response = await fetch(
+      `${GAS_URL}?lastModule=true&email=${encodeURIComponent(email)}`
+    );
+
+    const data = await response.json();
+    console.log("Server response: ", data);
+    return res.json(data);
+  } catch (err) {
+    console.error("Error fetching last module:", err);
+    return res.status(500).json({
+      success: false,
+      error: "Server error while fetching last module",
+      details: err.message,
+    });
   }
 });
 
