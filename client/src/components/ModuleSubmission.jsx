@@ -75,6 +75,14 @@ export default function ModuleSubmission({
       const res = await SubmitModules(Data);
 
       if (res.success) {
+        //Auto-clear selected modules
+        setSelectedModules([]);
+        // Return to AskEmail Screen
+        setTimeout(() => {
+          setGradeGroup(null);
+          setTeacherData(null);
+        }, 1000);
+
         // Main confetti blast
         confetti({
           particleCount: 120,
@@ -98,14 +106,6 @@ export default function ModuleSubmission({
         toast.success(`🎉 Great Work ${getFirstName(teacherData.name)}`, {
           duration: 3500,
         });
-
-        //Auto-clear selected modules
-        setSelectedModules([]);
-        // Return to AskEmail Screen
-        setTimeout(() => {
-          setGradeGroup(null);
-          setTeacherData(null);
-        }, 1200);
       } else {
         toast.error("Error submitting module.");
         setSubmitting(false);
@@ -197,6 +197,40 @@ export default function ModuleSubmission({
             </button>
           </motion.div>
         )}
+        {/* Submission History */}
+
+        {lastSubmission === undefined && (
+          <motion.div
+            initial={{ opacity: 0, x: 40 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 40 }}
+            transition={{ duration: 0.35 }}
+            className="hidden lg:block w-80 fixed right-10 top-24 bg-white 
+                   shadow-xl rounded-2xl border border-[#ffe0e0] p-6"
+          >
+            <h3 className="text-lg font-bold text-[#FF5C39] mb-3">
+              🗂️ Submission History Loading...
+            </h3>
+          </motion.div>
+        )}
+        {LastSubmissionList.length === 0 && (
+          <motion.div
+            initial={{ opacity: 0, x: 40 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 40 }}
+            transition={{ duration: 0.35 }}
+            className="hidden lg:block w-80 fixed right-10 top-24 bg-white 
+                   shadow-xl rounded-2xl border border-[#ffe0e0] p-6"
+          >
+            <h3 className="text-lg font-bold text-[#FF5C39] mb-3">
+              🗂️ Submission History
+            </h3>
+            <h4 className="text-md font-semibold text-gray-900 mb-2">
+              Submission History is not available
+            </h4>
+          </motion.div>
+        )}
+
         {lastSubmission && (
           <motion.div
             initial={{ opacity: 0, x: 40 }}
