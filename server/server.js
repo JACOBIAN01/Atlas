@@ -96,5 +96,43 @@ app.get("/grade-groups", async (req, res) => {
   }
 });
 
+
+
+const GAS_URL_CG =
+  "https://script.google.com/macros/s/AKfycbyM42MZb_uFltLSmvyG5O7qXX8uMn-RZGU5UrXmRRXy2Mq8qF9glV47xrnfftaSAy03/exec";
+
+// ------------------------------
+//  FETCH ROWS FROM GOOGLE SHEET
+// ------------------------------
+app.get("/fetch-rows", async (req, res) => {
+  try {
+    const response = await fetch(`${GAS_URL_CG}?action=getData`);
+    const data = await response.json();
+    res.json(data);
+  } catch (err) {
+    console.error("Error fetching rows:", err);
+    res.status(500).json({ success: false, error: "Server Error" });
+  }
+});
+
+
+// ------------------------------
+//  GENERATE CERTIFICATE
+// ------------------------------
+app.post("/generate", async (req, res) => {
+  try {
+    const response = await fetch(`${GAS_URL_CG}?action=generate`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(req.body),
+    });
+
+    const data = await response.json();
+    res.json(data);
+  } catch (err) {
+    console.error("Certificate generation error:", err);
+    res.status(500).json({ success: false, error: "Server Error" });
+  }
+});
 // --------------------------------------
 app.listen(5000, () => console.log("Server running on port 5000"));
