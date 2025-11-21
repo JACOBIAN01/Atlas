@@ -96,8 +96,6 @@ app.get("/grade-groups", async (req, res) => {
   }
 });
 
-
-
 const GAS_URL_CG =
   "https://script.google.com/macros/s/AKfycbyM42MZb_uFltLSmvyG5O7qXX8uMn-RZGU5UrXmRRXy2Mq8qF9glV47xrnfftaSAy03/exec";
 
@@ -114,7 +112,6 @@ app.get("/fetch-rows", async (req, res) => {
     res.status(500).json({ success: false, error: "Server Error" });
   }
 });
-
 
 // ------------------------------
 //  GENERATE CERTIFICATE
