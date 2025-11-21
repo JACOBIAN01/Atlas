@@ -1,5 +1,7 @@
 import { useState } from "react";
-import { CheckCircle2, XCircle, Loader2, Rocket } from "lucide-react";
+// eslint-disable-next-line no-unused-vars
+import { motion, AnimatePresence } from "framer-motion";
+import { CheckCircle2, XCircle, Rocket } from "lucide-react";
 
 import PreviewTable from "../components/PreviewTable";
 import ProcessTable from "../components/ProcessTable";
@@ -7,7 +9,17 @@ import ProgressBar from "../components/ProgressBar";
 
 import { fetchRows, generateCertificate } from "../API";
 
-function HomePage() {
+const cardAnimation = {
+  hidden: { opacity: 0, y: 40 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.35, ease: "easeOut" },
+  },
+  exit: { opacity: 0, y: -30, transition: { duration: 0.25, ease: "easeIn" } },
+};
+
+export default function HomePage() {
   const [step, setStep] = useState("fetch");
   const [rows, setRows] = useState([]);
   const [results, setResults] = useState([]);
@@ -44,96 +56,144 @@ function HomePage() {
   };
 
   return (
-    <div className="p-6 max-w-3xl mx-auto">
-      <h1 className="text-2xl font-bold text-center mb-6 flex justify-center items-center gap-2 text-blue-600">
-        <Rocket className="w-7 h-7" />
-        Atlas Certificate Generator
-      </h1>
-
-      {/* STEP 1: FETCH */}
-      {step === "fetch" && (
-        <div className="text-center space-y-4">
-          <h2 className="text-xl font-semibold">Step 1: Fetch Data</h2>
-          <p className="text-gray-600">Click the button to load data.</p>
-
-          <button
-            className="bg-blue-600 text-white px-4 py-2 rounded-lg"
-            onClick={handleFetchData}
+    <div
+      className="min-h-screen flex items-center justify-center p-8"
+      style={{ background: "#FDECEC" }} // Codingal soft-pink background
+    >
+      <AnimatePresence mode="wait">
+        {/* FETCH STEP */}
+        {step === "fetch" && (
+          <motion.div
+            key="fetch"
+            variants={cardAnimation}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            className="bg-white w-full max-w-xl p-10 rounded-3xl shadow-xl border border-gray-100"
           >
-            Fetch Data
-          </button>
-        </div>
-      )}
+            <h2 className="text-2xl font-bold text-center text-gray-800 mb-2">
+              Fetch Certificate Data
+            </h2>
+            <p className="text-center text-gray-500 mb-8">
+              Click the button to load all student records.
+            </p>
 
-      {/* STEP 2: PREVIEW */}
-      {step === "preview" && (
-        <div className="space-y-4">
-          <h2 className="text-xl font-semibold">Step 2: Preview Data</h2>
-
-          <PreviewTable rows={rows} />
-
-          <div className="flex gap-3 mt-4">
-            <button
-              className="bg-green-600 text-white px-4 py-2 rounded-lg flex items-center gap-2"
-              onClick={handleStartProcessing}
+            <motion.button
+              whileTap={{ scale: 0.97 }}
+              onClick={handleFetchData}
+              className="w-full bg-[#FF5F33] text-white py-3 rounded-xl text-lg font-semibold shadow-md"
             >
-              <Loader2 className="w-4 h-4 animate-spin" />
-              Start Processing
-            </button>
+              Fetch Data
+            </motion.button>
+          </motion.div>
+        )}
 
-            <button
-              className="bg-gray-500 text-white px-4 py-2 rounded-lg"
-              onClick={() => setStep("fetch")}
-            >
-              Back
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* STEP 3: PROCESSING */}
-      {step === "process" && (
-        <div className="space-y-4">
-          <h2 className="text-xl font-semibold">Processing Certificates</h2>
-
-          <ProgressBar progress={progress} />
-
-          <ProcessTable rows={rows} results={results} />
-        </div>
-      )}
-
-      {/* STEP 4: SUMMARY */}
-      {step === "summary" && (
-        <div className="text-center space-y-4">
-          <h2 className="text-xl font-semibold">Summary</h2>
-
-          <p className="text-gray-700">Total: {rows.length}</p>
-
-          <p className="text-green-600 flex justify-center items-center gap-1">
-            <CheckCircle2 className="w-5 h-5" />
-            Success: {results.filter((r) => r.status === "success").length}
-          </p>
-
-          <p className="text-red-600 flex justify-center items-center gap-1">
-            <XCircle className="w-5 h-5" />
-            Failed: {results.filter((r) => r.status === "failed").length}
-          </p>
-
-          <button
-            className="bg-blue-600 text-white px-4 py-2 rounded-lg"
-            onClick={() => {
-              setRows([]);
-              setResults([]);
-              setProgress(0);
-              setStep("fetch");
-            }}
+        {/* PREVIEW STEP */}
+        {step === "preview" && (
+          <motion.div
+            key="preview"
+            variants={cardAnimation}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            className="bg-white w-full max-w-4xl p-10 rounded-3xl shadow-xl border border-gray-100"
           >
-            Start Again
-          </button>
-        </div>
-      )}
+            <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
+              Preview Data
+            </h2>
+
+            <div className="bg-gray-50 p-4 rounded-xl shadow-inner mb-6">
+              <PreviewTable rows={rows} />
+            </div>
+
+            <div className="flex justify-between">
+              <motion.button
+                whileTap={{ scale: 0.97 }}
+                whileHover={{ scale: 1.02 }}
+                className="px-6 py-3 bg-gray-600 text-white rounded-xl font-semibold"
+                onClick={() => setStep("fetch")}
+              >
+                Back
+              </motion.button>
+
+              <motion.button
+                whileTap={{ scale: 0.97 }}
+                whileHover={{ scale: 1.02 }}
+                className="px-6 py-3 bg-[#FF5F33] text-white rounded-xl font-semibold flex items-center gap-2"
+                onClick={handleStartProcessing}
+              >
+                Start Processing
+              </motion.button>
+            </div>
+          </motion.div>
+        )}
+
+        {/* PROCESSING STEP */}
+        {step === "process" && (
+          <motion.div
+            key="process"
+            variants={cardAnimation}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            className="bg-white w-full max-w-4xl p-10 rounded-3xl shadow-xl border border-gray-100"
+          >
+            <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
+              Processing Certificates
+            </h2>
+
+            <ProgressBar progress={progress} />
+
+            <div className="bg-gray-50 p-4 rounded-xl shadow-inner mt-6">
+              <ProcessTable rows={rows} results={results} />
+            </div>
+          </motion.div>
+        )}
+
+        {/* SUMMARY STEP */}
+        {step === "summary" && (
+          <motion.div
+            key="summary"
+            variants={cardAnimation}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            className="bg-white w-full max-w-xl p-10 rounded-3xl shadow-xl border border-gray-100"
+          >
+            <h2 className="text-2xl font-bold text-center text-gray-800 mb-4">
+              Summary
+            </h2>
+
+            <div className="space-y-3 text-center text-lg">
+              <p>Total: {rows.length}</p>
+
+              <p className="text-green-600 flex justify-center gap-2 items-center">
+                <CheckCircle2 className="w-6 h-6" />
+                Success: {results.filter((r) => r.status === "success").length}
+              </p>
+
+              <p className="text-red-600 flex justify-center gap-2 items-center">
+                <XCircle className="w-6 h-6" />
+                Failed: {results.filter((r) => r.status === "failed").length}
+              </p>
+            </div>
+
+            <motion.button
+              whileTap={{ scale: 0.97 }}
+              whileHover={{ scale: 1.02 }}
+              className="w-full mt-6 bg-[#FF5F33] text-white py-3 rounded-xl font-semibold"
+              onClick={() => {
+                setRows([]);
+                setResults([]);
+                setProgress(0);
+                setStep("fetch");
+              }}
+            >
+              Start Again
+            </motion.button>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
-
-export default HomePage;
