@@ -9,7 +9,7 @@ export default function GradeGroup({
   setGradeGroup,
   gradeOptions,
 }) {
-  const [selected, setSelected] = useState("");
+  const [selected, setSelected] = useState("Grade 1-3");
   const handleOnContinue = () => {
     toast("⚠️ Please don't submit repeated modules!");
     setGradeGroup(selected);
