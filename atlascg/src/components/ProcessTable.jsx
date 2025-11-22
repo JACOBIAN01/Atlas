@@ -10,7 +10,7 @@ function ProcessTable({ rows, results }) {
             className="border rounded-lg p-4 bg-white shadow-sm hover:shadow-md transition-all"
           >
             {/* Grid Layout */}
-            <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
+            <div className="flex flex-row justify-center items-center gap-10">
               {/* ID */}
               <div>
                 <p className="text-xs text-gray-500 font-medium">ID</p>

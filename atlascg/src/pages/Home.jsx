@@ -8,6 +8,7 @@ import ProcessTable from "../components/ProcessTable";
 import ProgressBar from "../components/ProgressBar";
 
 import { fetchRows, generateCertificate } from "../API";
+import AboutAtlas from "./About";
 
 const cardAnimation = {
   hidden: { opacity: 0, y: 40 },
@@ -20,12 +21,20 @@ const cardAnimation = {
 };
 
 export default function HomePage() {
+  const [begin, setBegin] = useState(true);
+
   const [step, setStep] = useState("fetch");
   const [rows, setRows] = useState([]);
   const [results, setResults] = useState([]);
   const [progress, setProgress] = useState(0);
+  const [fetchLoading, setFetchLoading] = useState(false);
+
+  if (begin) {
+    return <AboutAtlas onBegin={setBegin} />;
+  }
 
   const handleFetchData = async () => {
+    setFetchLoading(true);
     try {
       const data = await fetchRows();
       setRows(data);
@@ -81,11 +90,16 @@ export default function HomePage() {
             </p>
 
             <motion.button
+              disabled={fetchLoading}
               whileTap={{ scale: 0.97 }}
               onClick={handleFetchData}
-              className="w-full bg-[#FF5F33] text-white py-3 rounded-xl text-lg font-semibold shadow-md"
+              className={`w-full bg-[#FF5F33] text-white py-3 rounded-xl text-lg font-semibold shadow-md ${
+                fetchLoading
+                  ? "bg-gray-400 cursor-not-allowed text-white"
+                  : "bg-[#FF5C39] hover:bg-[#e64e33] text-white"
+              }`}
             >
-              Fetch Data
+              {fetchLoading ? "Data on the way" : "Fetch Data"}
             </motion.button>
           </motion.div>
         )}
