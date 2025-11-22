@@ -31,14 +31,15 @@ export const fetchRows = async () => {
 // GENERATE CERTIFICATE (POST)
 // ===============================
 export const generateCertificate = async (payload) => {
+  console.log("Inside Generate Certificate function API");
   try {
     const res = await fetch(`${BASE_URL}/generate`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
     });
-
     const data = await res.json();
+    console.log(data);
     return data;
   } catch (err) {
     console.error("Frontend Certificate Error:", err);

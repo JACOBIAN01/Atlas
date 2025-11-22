@@ -30,12 +30,15 @@ export default function HomePage() {
       const data = await fetchRows();
       setRows(data);
       setStep("preview");
+      console.log("HomePage/handleFetch Data", data);
     } catch (err) {
+      console.log(err);
       alert("Failed to fetch data: " + err);
     }
   };
 
   const handleStartProcessing = async () => {
+    console.log("Processing Started. Inside handleStartProcessing");
     setStep("process");
     let temp = [];
     setProgress(0);
@@ -47,7 +50,6 @@ export default function HomePage() {
         status: res.success ? "success" : "failed",
         message: res.message || "",
       });
-
       setResults([...temp]);
       setProgress(Math.round(((i + 1) / rows.length) * 100));
     }
