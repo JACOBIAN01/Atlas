@@ -97,7 +97,7 @@ app.get("/grade-groups", async (req, res) => {
 });
 
 const GAS_URL_CG =
-  "https://script.google.com/macros/s/AKfycbyM42MZb_uFltLSmvyG5O7qXX8uMn-RZGU5UrXmRRXy2Mq8qF9glV47xrnfftaSAy03/exec";
+  "https://script.google.com/macros/s/AKfycbzQ2jLjySJupAeH7xS2Bs0_eiQU8hJg86zr_ZR8Y6be6ha15rm4rBJehMiUSlA8dLx2/exec";
 
 // ------------------------------
 //  FETCH ROWS FROM GOOGLE SHEET
