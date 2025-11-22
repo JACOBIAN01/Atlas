@@ -151,7 +151,6 @@ export default function HomePage() {
             </div>
           </motion.div>
         )}
-        <div className="ml-5 text-gray-600">V:0:1</div>
         {/* SUMMARY STEP */}
         {step === "summary" && (
           <motion.div
