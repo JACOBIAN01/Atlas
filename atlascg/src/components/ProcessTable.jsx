@@ -1,41 +1,72 @@
 function ProcessTable({ rows, results }) {
   return (
-    <div className="overflow-x-auto mt-4 border rounded-lg">
-      <table className="min-w-full border-collapse">
-        <thead>
-          <tr className="bg-gray-100 border-b">
-            <th className="px-4 py-2 text-left font-semibold">ID</th>
-            <th className="px-4 py-2 text-left font-semibold">Name</th>
-            <th className="px-4 py-2 text-left font-semibold">Email</th>
-            <th className="px-4 py-2 text-left font-semibold">Status</th>
-          </tr>
-        </thead>
+    <div className="mt-4 space-y-3">
+      {rows.map((row, i) => {
+        const result = results[i];
 
-        <tbody>
-          {rows.map((row, i) => {
-            const result = results[i];
+        return (
+          <div
+            key={i}
+            className="border rounded-lg p-4 bg-white shadow-sm hover:shadow-md transition-all"
+          >
+            {/* Grid Layout */}
+            <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
+              {/* ID */}
+              <div>
+                <p className="text-xs text-gray-500 font-medium">ID</p>
+                <p className="text-gray-800 font-semibold">{row.id}</p>
+              </div>
 
-            return (
-              <tr key={i} className="border-b hover:bg-gray-50">
-                <td className="px-4 py-2">{row.id}</td>
-                <td className="px-4 py-2">{row.name}</td>
-                <td className="px-4 py-2">{row.email}</td>
-                <td className="px-4 py-2">
-                  {result?.status === "success" && (
-                    <span className="text-green-600 font-semibold">
-                      Success
-                    </span>
-                  )}
-                  {result?.status === "failed" && (
-                    <span className="text-red-600 font-semibold">Failed</span>
-                  )}
-                  {!result && <span className="text-gray-500">Pending...</span>}
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+              {/* Name */}
+              <div>
+                <p className="text-xs text-gray-500 font-medium">Name</p>
+                <p className="text-gray-800 font-semibold">{row.name}</p>
+              </div>
+
+              {/* Email */}
+              <div>
+                <p className="text-xs text-gray-500 font-medium">Email</p>
+                <p className="text-gray-800 font-semibold break-all">
+                  {row.email}
+                </p>
+              </div>
+
+              {/* Skill */}
+              <div>
+                <p className="text-xs text-gray-500 font-medium">Skill</p>
+                <p className="text-gray-800 font-semibold break-all">
+                  {row.skills}
+                </p>
+              </div>
+
+              {/* Grade */}
+              <div>
+                <p className="text-xs text-gray-500 font-medium">Grade</p>
+                <p className="text-gray-800 font-semibold break-all">
+                  {row.grade}
+                </p>
+              </div>
+
+              {/* Status */}
+              <div>
+                <p className="text-xs text-gray-500 font-medium">Status</p>
+
+                {result?.status === "success" && (
+                  <p className="text-green-600 font-bold">Success</p>
+                )}
+
+                {result?.status === "failed" && (
+                  <p className="text-red-600 font-bold">Failed</p>
+                )}
+
+                {!result && (
+                  <p className="text-gray-500 font-medium">Pending...</p>
+                )}
+              </div>
+            </div>
+          </div>
+        );
+      })}
     </div>
   );
 }

@@ -11,13 +11,14 @@ export const fetchRows = async () => {
     const res = await fetch(`${BASE_URL}/fetch-rows`);
     if (!res.ok) throw new Error("Failed to fetch rows");
     const data = await res.json();
-
+    console.log("Fetch Data API", data);
     // Convert Google Sheet 2D array -> Objects
     const rows = data.slice(1).map((row) => ({
       id: row[0],
       name: row[1],
       email: row[2],
       skills: row[3],
+      grade: row[4],
     }));
 
     return rows;
