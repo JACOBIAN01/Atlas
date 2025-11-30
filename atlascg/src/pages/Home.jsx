@@ -22,7 +22,6 @@ const cardAnimation = {
 
 export default function HomePage() {
   const [begin, setBegin] = useState(true);
-
   const [step, setStep] = useState("fetch");
   const [rows, setRows] = useState([]);
   const [results, setResults] = useState([]);
@@ -39,10 +38,11 @@ export default function HomePage() {
       const data = await fetchRows();
       setRows(data);
       setStep("preview");
-      console.log("HomePage/handleFetch Data", data);
+      setFetchLoading(false);
     } catch (err) {
       console.log(err);
       alert("Failed to fetch data: " + err);
+      setFetchLoading(false);
     }
   };
 
@@ -80,7 +80,7 @@ export default function HomePage() {
             initial="hidden"
             animate="visible"
             exit="exit"
-            className="bg-white w-full max-w-xl p-10 rounded-3xl shadow-xl border border-gray-100"
+            className="bg-white w-full max-w-xl p-10 rounded-3xl shadow-xl border border-gray-100 items-center justify-center"
           >
             <h2 className="text-2xl font-bold text-center text-gray-800 mb-2">
               Fetch Certificate Data
@@ -106,42 +106,47 @@ export default function HomePage() {
 
         {/* PREVIEW STEP */}
         {step === "preview" && (
-          <motion.div
-            key="preview"
-            variants={cardAnimation}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-            className="bg-white w-full max-w-4xl p-10 rounded-3xl shadow-xl border border-gray-100"
-          >
-            <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
-              Preview Data
-            </h2>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* Left Panel: Action Buttons */}
+            <div className="flex flex-col justify-start items-center gap-4 bg-white p-6 rounded-3xl shadow-md border border-gray-100 h-fit">
+              <h2 className="text-lg font-semibold text-gray-700">Actions</h2>
 
-            <div className="bg-gray-50 p-4 rounded-xl shadow-inner mb-6">
-              <PreviewTable rows={rows} />
+              <div className="flex flex-col gap-3 w-full">
+                <motion.button
+                  className="w-full px-6 py-3 bg-[#FF5F33] hover:bg-[#e6542f] text-white rounded-xl font-semibold shadow"
+                  onClick={handleStartProcessing}
+                >
+                  Start Processing
+                </motion.button>
+                <motion.button
+                  className={`w-full px-6 py-3 hover:bg-blue-700 text-white rounded-xl font-semibold shadow ${
+                    fetchLoading ? "bg-blue-300" : "bg-blue-600"
+                  }`}
+                  onClick={handleFetchData}
+                >
+                  {fetchLoading ? "Data on the way" : "Update Data"}
+                </motion.button>
+              </div>
             </div>
 
-            <div className="flex justify-between">
-              <motion.button
-                whileTap={{ scale: 0.97 }}
-                whileHover={{ scale: 1.02 }}
-                className="px-6 py-3 bg-gray-600 text-white rounded-xl font-semibold"
-                onClick={() => setStep("fetch")}
-              >
-                Back
-              </motion.button>
+            {/* Preview Card */}
+            <motion.div
+              key="preview"
+              variants={cardAnimation}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              className="lg:col-span-2 bg-white p-6 rounded-3xl shadow-xl border border-gray-100"
+            >
+              <h2 className="text-xl font-bold text-center text-gray-800 mb-5">
+                Preview Data
+              </h2>
 
-              <motion.button
-                whileTap={{ scale: 0.97 }}
-                whileHover={{ scale: 1.02 }}
-                className="px-6 py-3 bg-[#FF5F33] text-white rounded-xl font-semibold flex items-center gap-2"
-                onClick={handleStartProcessing}
-              >
-                Start Processing
-              </motion.button>
-            </div>
-          </motion.div>
+              <div className="bg-gray-50 p-4 rounded-xl shadow-inner overflow-y-auto h-[500px]">
+                <PreviewTable rows={rows} />
+              </div>
+            </motion.div>
+          </div>
         )}
 
         {/* PROCESSING STEP */}
