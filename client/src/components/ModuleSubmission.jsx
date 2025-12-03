@@ -18,6 +18,8 @@ export default function ModuleSubmission({
   const [submitting, setSubmitting] = useState(false);
   const [modules, setModules] = useState([]);
   const [loadingModules, setLoadingModules] = useState(true);
+  console.log(gradeGroup);
+  console.log(modules);
 
   const LastSubmissionList = useMemo(() => {
     return lastSubmission
@@ -148,6 +150,12 @@ export default function ModuleSubmission({
               </p>
             </div>
 
+            {!loadingModules && modules.length === 0 && (
+              <p className="text-center text-gray-500">
+                No modules found for this grade.
+              </p>
+            )}
+
             <div className="space-y-4 max-h-[350px] overflow-y-auto pr-2">
               {loadingModules ? (
                 <div className="flex justify-center items-center">
@@ -176,11 +184,6 @@ export default function ModuleSubmission({
               )}
             </div>
 
-            {!loadingModules && modules.length === 0 && (
-              <p className="text-center text-gray-500">
-                No modules found for this grade.
-              </p>
-            )}
             <button
               onClick={handleSelectedModule}
               disabled={selectedModules.length === 0 || submitting}
