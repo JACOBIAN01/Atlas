@@ -18,8 +18,6 @@ export default function ModuleSubmission({
   const [submitting, setSubmitting] = useState(false);
   const [modules, setModules] = useState([]);
   const [loadingModules, setLoadingModules] = useState(true);
-  console.log(gradeGroup);
-  console.log(modules);
 
   const LastSubmissionList = useMemo(() => {
     return lastSubmission
@@ -162,9 +160,9 @@ export default function ModuleSubmission({
                   <Loader />
                 </div>
               ) : (
-                modules.map((module) => (
+                modules.map((module, i) => (
                   <label
-                    key={module}
+                    key={module || i}
                     className={`flex items-center space-x-3 cursor-pointer rounded-2xl p-3 transition border 
       ${
         LastSubmissionList.includes(module)
