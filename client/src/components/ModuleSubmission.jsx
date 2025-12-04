@@ -127,65 +127,68 @@ export default function ModuleSubmission({
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-[#FFECEC] px-4">
       <AnimatePresence>
-        {gradeGroup && (
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 30 }}
-            transition={{ duration: 0.35, ease: "easeOut" }}
-            className="w-full max-w-2xl bg-white rounded-3xl shadow-xl p-10 border border-[#ffe0e0]"
-          >
-            <div className="text-center mb-6">
-              <h2 className="text-2xl font-bold text-gray-800 tracking-tight">
-                Hey{" "}
-                <span className="text-[#FF5C39]">
-                  {getFirstName(teacherData.name)}
-                </span>{" "}
-                👋
-              </h2>
-              <p className="text-lg text-gray-600 font-medium mt-1">
-                Select the modules you’ve completed
-              </p>
-            </div>
+        <div>
+          {gradeGroup && (
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 30 }}
+              transition={{ duration: 0.35, ease: "easeOut" }}
+              className="w-full max-w-2xl bg-white rounded-3xl shadow-xl p-10 border border-[#ffe0e0]"
+            >
+              <div className="text-center mb-6">
+                <h2 className="text-2xl font-bold text-gray-800 tracking-tight">
+                  Hey{" "}
+                  <span className="text-[#FF5C39]">
+                    {getFirstName(teacherData.name)}
+                  </span>{" "}
+                  👋
+                </h2>
+                <p className="text-lg text-gray-600 font-medium mt-1">
+                  Select the modules you’ve completed
+                </p>
+              </div>
 
-            {!loadingModules && modules.length === 0 && (
-              <p className="text-center text-gray-500">
-                No modules found for this grade.
-              </p>
-            )}
+              {!loadingModules && modules.length === 0 && (
+                <p className="text-center text-gray-500">
+                  No modules found for this grade.
+                </p>
+              )}
 
-            <div className="space-y-4 max-h-[350px] overflow-y-auto pr-2">
-              {loadingModules ? (
-                <div className="flex justify-center items-center">
-                  <Loader />
-                </div>
-              ) : (
-                modules.map((module, i) => (
-                  <label
-                    key={module || i}
-                    className={`flex items-center space-x-3 cursor-pointer rounded-2xl p-3 transition border 
+              <div className="space-y-4 max-h-[350px] overflow-y-auto pr-2">
+                {loadingModules ? (
+                  <div className="flex justify-center items-center">
+                    <Loader />
+                  </div>
+                ) : (
+                  modules.map((module, i) => (
+                    <label
+                      key={i}
+                      className={`flex items-center space-x-3 cursor-pointer rounded-2xl p-3 transition border 
       ${
         LastSubmissionList.includes(module)
           ? "bg-red-50 border-red-300"
           : "bg-[#FFF7F7] hover:bg-[#FFE6E6] border-[#ffe0e0]"
       }`}
-                  >
-                    <input
-                      type="checkbox"
-                      checked={selectedModules.includes(module)}
-                      onChange={() => toggleModule(module)}
-                      className="h-5 w-5 rounded-md border-gray-300 text-[#FF5C39] focus:ring-[#FF5C39]"
-                    />
-                    <span className="text-gray-700 font-medium">{module}</span>
-                  </label>
-                ))
-              )}
-            </div>
+                    >
+                      <input
+                        type="checkbox"
+                        checked={selectedModules.includes(module)}
+                        onChange={() => toggleModule(module)}
+                        className="h-5 w-5 rounded-md border-gray-300 text-[#FF5C39] focus:ring-[#FF5C39]"
+                      />
+                      <span className="text-gray-700 font-medium">
+                        {module}
+                      </span>
+                    </label>
+                  ))
+                )}
+              </div>
 
-            <button
-              onClick={handleSelectedModule}
-              disabled={selectedModules.length === 0 || submitting}
-              className={`mt-8 w-full py-3.5 rounded-2xl text-lg font-semibold shadow-md transition-all 
+              <button
+                onClick={handleSelectedModule}
+                disabled={selectedModules.length === 0 || submitting}
+                className={`mt-8 w-full py-3.5 rounded-2xl text-lg font-semibold shadow-md transition-all 
                 ${
                   submitting
                     ? "bg-gray-400 cursor-not-allowed text-white"
@@ -193,84 +196,85 @@ export default function ModuleSubmission({
                     ? "bg-[#FF5C39] hover:bg-[#e64e33] text-white"
                     : "bg-gray-300 text-gray-500 cursor-not-allowed"
                 }`}
+              >
+                {submitting ? "Submitting..." : "Continue"}
+              </button>
+            </motion.div>
+          )}
+          {/* Submission History */}
+
+          {lastSubmission === undefined && (
+            <motion.div
+              initial={{ opacity: 0, x: 40 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 40 }}
+              transition={{ duration: 0.35 }}
+              className="hidden lg:block w-80 fixed right-10 top-24 bg-white 
+                   shadow-xl rounded-2xl border border-[#ffe0e0] p-6"
             >
-              {submitting ? "Submitting..." : "Continue"}
-            </button>
-          </motion.div>
-        )}
-        {/* Submission History */}
-
-        {lastSubmission === undefined && (
-          <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: 40 }}
-            transition={{ duration: 0.35 }}
-            className="hidden lg:block w-80 fixed right-10 top-24 bg-white 
+              <h3 className="text-lg font-bold text-[#FF5C39] mb-3">
+                🗂️ Submission History Loading...
+              </h3>
+            </motion.div>
+          )}
+          {LastSubmissionList.length === 0 && (
+            <motion.div
+              initial={{ opacity: 0, x: 40 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 40 }}
+              transition={{ duration: 0.35 }}
+              className="hidden lg:block w-80 fixed right-10 top-24 bg-white 
                    shadow-xl rounded-2xl border border-[#ffe0e0] p-6"
-          >
-            <h3 className="text-lg font-bold text-[#FF5C39] mb-3">
-              🗂️ Submission History Loading...
-            </h3>
-          </motion.div>
-        )}
-        {LastSubmissionList.length === 0 && (
-          <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: 40 }}
-            transition={{ duration: 0.35 }}
-            className="hidden lg:block w-80 fixed right-10 top-24 bg-white 
+            >
+              <h3 className="text-lg font-bold text-[#FF5C39] mb-3">
+                🗂️ Submission History
+              </h3>
+              <h4 className="text-md font-semibold text-gray-900 mb-2">
+                Submission History is not available
+              </h4>
+            </motion.div>
+          )}
+
+          {lastSubmission && (
+            <motion.div
+              initial={{ opacity: 0, x: 40 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 40 }}
+              transition={{ duration: 0.35 }}
+              className="hidden lg:block w-80 fixed right-10 top-24 bg-white 
                    shadow-xl rounded-2xl border border-[#ffe0e0] p-6"
-          >
-            <h3 className="text-lg font-bold text-[#FF5C39] mb-3">
-              🗂️ Submission History
-            </h3>
-            <h4 className="text-md font-semibold text-gray-900 mb-2">
-              Submission History is not available
-            </h4>
-          </motion.div>
-        )}
+            >
+              <h3 className="text-lg font-bold text-[#FF5C39] mb-3">
+                🗂️ Submission History
+              </h3>
 
-        {lastSubmission && (
-          <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: 40 }}
-            transition={{ duration: 0.35 }}
-            className="hidden lg:block w-80 fixed right-10 top-24 bg-white 
-                   shadow-xl rounded-2xl border border-[#ffe0e0] p-6"
-          >
-            <h3 className="text-lg font-bold text-[#FF5C39] mb-3">
-              🗂️ Submission History
-            </h3>
+              <div className="bg-[#FFF7DC] border border-[#FFE29A] p-4 rounded-xl">
+                <p className="mb-2 text-gray-700">
+                  <span className="font-semibold">Grade Group:</span>{" "}
+                  {lastSubmission.gradeGroup}
+                </p>
 
-            <div className="bg-[#FFF7DC] border border-[#FFE29A] p-4 rounded-xl">
-              <p className="mb-2 text-gray-700">
-                <span className="font-semibold">Grade Group:</span>{" "}
-                {lastSubmission.gradeGroup}
-              </p>
+                <p className="font-semibold text-gray-800 mt-3">
+                  Modules Submitted:
+                </p>
+                <ul className="list-disc ml-5 mt-1 text-gray-700">
+                  {lastSubmission.modules
+                    .split(",")
+                    .map((m) => m.trim())
+                    .filter(Boolean)
+                    .map((m, i) => (
+                      <li key={i}>{m}</li>
+                    ))}
+                </ul>
 
-              <p className="font-semibold text-gray-800 mt-3">
-                Modules Submitted:
-              </p>
-              <ul className="list-disc ml-5 mt-1 text-gray-700">
-                {lastSubmission.modules
-                  .split(",")
-                  .map((m) => m.trim())
-                  .filter(Boolean)
-                  .map((m, i) => (
-                    <li key={i}>{m}</li>
-                  ))}
-              </ul>
-
-              <p className="mt-4 text-gray-700">
-                <span className="font-semibold">Submitted At:</span>{" "}
-                {new Date(lastSubmission.timestamp).toLocaleString()}
-              </p>
-            </div>
-          </motion.div>
-        )}
+                <p className="mt-4 text-gray-700">
+                  <span className="font-semibold">Submitted At:</span>{" "}
+                  {new Date(lastSubmission.timestamp).toLocaleString()}
+                </p>
+              </div>
+            </motion.div>
+          )}
+        </div>
       </AnimatePresence>
     </div>
   );
